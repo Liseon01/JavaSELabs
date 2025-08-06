@@ -1,5 +1,7 @@
 package workshop.account.entity;
 
+import workshop.account.exception.InsufficientBalanceException;
+
 public class Account {
 	private String custId, acctId;
 	private int balance;
@@ -39,7 +41,12 @@ public class Account {
 		balance += amount;
 	}
 	// 출금
-	public void withdraw(int amount) {
+	public void withdraw(int amount) throws InsufficientBalanceException {
+		if(amount > balance) {
+			String errMessage = String.format("잔액이 부족합니다. (요청 금액: %d, 현재 잔액: %d)", amount, balance);
+			// exception 강제로 발생 
+			throw new InsufficientBalanceException(errMessage);
+		}
 		balance -= amount;
 	}
 }
